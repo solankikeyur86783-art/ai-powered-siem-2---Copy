@@ -1,0 +1,93 @@
+# ══════════════════════════════════════════════════════════
+#  Winlogbeat Configuration for AI-Powered SIEM Platform
+#  Place this file at: C:\Program Files\Winlogbeat\winlogbeat.yml
+# ══════════════════════════════════════════════════════════
+
+winlogbeat.event_logs:
+
+  # ── Security Events (Critical for threat detection) ──
+  # - name: Security
+  #   event_id: 4624, 4625, 4634, 4648, 4657, 4663, 4672, 4673, 4674,
+  #             4688, 4697, 4698, 4699, 4700, 4701, 4702, 4719, 4720,
+  #             4722, 4724, 4728, 4732, 4756, 4771, 4776, 4778, 4779,
+  #             4946, 4948, 5140, 5142, 5145, 5156, 5157
+  #   ignore_older: 72h
+  #   processors:
+  #     - add_fields:
+  #         target: ''
+  #         fields:
+  #           siem_source: winlogbeat
+  #           environment: production
+
+  # ── System Events ──
+  - name: System
+    event_id: 7034, 7035, 7036, 7040, 7045, 1074, 6005, 6006, 6008
+    ignore_older: 72h
+
+  # ── Application Events ──
+  - name: Application
+    level: error, critical, warning
+    ignore_older: 48h
+
+  # ── Windows Defender ──
+  - name: Microsoft-Windows-Windows Defender/Operational
+    ignore_older: 72h
+
+  # ── PowerShell Logging ──
+  - name: Microsoft-Windows-PowerShell/Operational
+    event_id: 4103, 4104, 4105, 4106
+    ignore_older: 72h
+
+  # ── Sysmon (Install Sysmon for enhanced visibility) ──
+  - name: Microsoft-Windows-Sysmon/Operational
+    ignore_older: 72h
+
+# ── Output: Send to our SIEM backend ──────────────────
+# Option 1: HTTP output (sends directly to FastAPI)
+output.http:
+  enabled: true
+  hosts: ["http://localhost:8000/api/logs/ingest/raw"]
+  headers:
+    Content-Type: "application/json"
+
+# Option 2: Logstash (TCP) — uncomment to use instead
+# output.logstash:
+#   hosts: ["localhost:5044"]
+
+# Option 3: Elasticsearch — uncomment for ELK stack
+# output.elasticsearch:
+#   hosts: ["localhost:9200"]
+#   index: "siem-logs-%{+yyyy.MM.dd}"
+
+# ── Processors ────────────────────────────────────────
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_locale:
+      format: offset
+  - add_fields:
+      target: ''
+      fields:
+        siem.version: "2.0"
+        siem.collector: "winlogbeat"
+
+# ── Logging ───────────────────────────────────────────
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: C:\ProgramData\winlogbeat\logs
+  name: winlogbeat
+  keepfiles: 7
+  permissions: 0640
+
+# ── General ───────────────────────────────────────────
+name: "winlogbeat-siem"
+tags: ["siem", "windows", "security"]
+
+# Performance tuning
+queue.mem:
+  events: 4096
+  flush.min_events: 512
+  flush.timeout: 5s
+
+max_procs: 2

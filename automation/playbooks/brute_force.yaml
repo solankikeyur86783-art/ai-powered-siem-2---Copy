@@ -1,0 +1,46 @@
+name: Brute Force Response Playbook
+version: "1.0"
+trigger:
+  threat_type: brute_force
+  severity: [high, critical]
+  threshold: 5_failures_in_60s
+
+steps:
+  - id: 1
+    action: block_source_ip
+    description: Block the attacking IP at firewall level
+    auto: true
+    timeout: 30s
+
+  - id: 2
+    action: flag_accounts_password_reset
+    description: Flag all targeted accounts for forced password reset
+    auto: true
+
+  - id: 3
+    action: enable_enhanced_logging
+    description: Enable verbose auth logging on targeted host
+    auto: true
+
+  - id: 4
+    action: notify_soc
+    description: Send alert to SOC team via email/Slack
+    auto: true
+    message: "Brute force attack detected from {source_ip} against {hostname}"
+
+  - id: 5
+    action: capture_forensics
+    description: Capture current process list and network connections
+    auto: false
+    requires_human: true
+
+  - id: 6
+    action: isolate_host
+    description: Network-isolate the targeted host if compromise confirmed
+    auto: false
+    requires_human: true
+    condition: compromise_confirmed == true
+
+rollback:
+  - unblock_ip
+  - restore_logging_level

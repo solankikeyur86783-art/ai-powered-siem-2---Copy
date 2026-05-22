@@ -1,0 +1,89 @@
+# ── Python ────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.pytest_cache/
+.mypy_cache/
+*.pyo
+
+# ── Virtual Environments ─────────────────────
+venv/
+env/
+.venv/
+
+# ── Environment & Secrets ────────────────────
+# ⚠️ NEVER commit .env files — they contain API keys!
+.env
+*.env
+*.env.local
+*.env.production
+backend/.env
+backend/app/.env
+!.env.example
+
+# ── ML Model (large binaries) ────────────────
+ml_model/*.pkl
+ml_model/*.joblib
+!ml_model/predictor.py
+!ml_model/train_model.py
+!ml_model/train_multi_dataset.py
+!ml_model/test_prediction.py
+
+# ── Large Dataset Files ───────────────────────
+dataset/
+datasets/
+*.csv
+*.xlsx
+*.pcap
+*.pcapng
+*.zip
+
+# ── Node.js ──────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+
+# ── Frontend Build Output ────────────────────
+siem_frontend/dist/
+siem_frontend/build/
+
+# ── IDE & OS ─────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs & Temp Files ────────────────────────
+*.log
+tmp/
+temp/
+sim_output.txt
+simulation_results.json
+*.bak
+
+# ── Reports & Generated Files ────────────────
+backend/app/reports/*.pdf
+backend/app/reports/*.json
+
+# ── Docs Build ───────────────────────────────
+docs/node_modules/
+docs/package.json
+docs/package-lock.json
+docs/generate_pdf.js
+
+# ── Misc Text / Notes ────────────────────────
+*.txt
+!requirements*.txt
