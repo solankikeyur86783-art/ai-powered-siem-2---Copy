@@ -10,7 +10,7 @@
 
 **A full-stack, AI-driven Security Information & Event Management platform with real-time threat detection, autonomous SOC agents, LLM-powered analysis, and live log ingestion.**
 
-[Features](#-features) • [Architecture](#-architecture) • [Quick Start](#-quick-start) • [API Docs](#-api-endpoints) • [Screenshots](#-dashboard-pages)
+[Features](#-features) • [Architecture](#-architecture) • [Quick Start](#-quick-start) • [API Docs](#-api-endpoints) • [Screenshots](#-screenshots)
 
 </div>
 
@@ -333,6 +333,18 @@ python scripts/honeypot_attack.py
 | `honeypot_captures` | Attacker interactions with honeypots |
 | `rules` | Custom detection rules |
 | `users` | Authenticated SOC users |
+
+---
+
+## 📸 Screenshots
+
+### 🔑 Secure Sign-In Portal
+Highly secure, modern glassmorphism portal featuring real-time system status indicators, ML model metrics, and active threat counters.
+![Secure Sign-In](docs/screenshots/login_page.png)
+
+### 🏠 Main SOC Dashboard
+Comprehensive real-time overview displaying live threat feeds, log volumes, critical alerts, AI insights, top attacking IPs, and threat categorization charts.
+![SOC Dashboard](docs/screenshots/dashboard.png)
 
 ---
 
